@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: flapos-pos
+    runtime: node
+    region: singapore
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: flapos-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    disk:
+      name: uploads
+      mountPath: /app/uploads
+      sizeGB: 1
+
+  - type: web
+    name: flapos-api
+    runtime: docker
+    region: singapore
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: flapos-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+
+  - type: postgres
+    name: flapos-db
+    region: singapore
+    plan: free
+    ipAllowList: []
