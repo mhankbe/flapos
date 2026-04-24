@@ -22,8 +22,8 @@ app.use('/api/transaksi', require('./routes/transaksi'));
 app.use('/api/rekap', require('./routes/rekap'));
 app.use('/api/settings', require('./routes/settings'));
 
-// SPA fallback
-app.get('*', (req, res) => {
+// SPA fallback - Express v5 compatible
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
